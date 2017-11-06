@@ -19,7 +19,7 @@ render(
         <Router>
             <div>
                 <Route exact path='/' component={Dashboard} />
-                <Route exact path='/result' component={WeatherResult} />
+                <Route exact path='/result/:lat,:lng' component={WeatherResult} />
             </div>
         </Router>
     </Provider>,

@@ -2,6 +2,7 @@ import { createAction, handleActions } from 'redux-actions'
 
 // Actions
 export const GET_DEVICE_COORDS = 'weatherapp/locationsearch/GET_DEVICE_COORDS';
+export const SET_DEVICE_COORDS_FROM_PATH = 'weatherapp/locationsearch/SET_DEVICE_COORDS_FROM_PATH';
 export const UPDATING_DEVICE_COORDS = 'weatherapp/locationsearch/UPDATING_DEVICE_COORDS';
 //export const GET_USER_LOCATION = 'weatherapp/locationsearch/GET_USER_LOCATION';
 
@@ -10,6 +11,7 @@ export const UPDATING_GEOCODE_ADDRESS = 'weatherapp/locationsearch/UPDATING_GEOC
 
 // Action Creators
 const gettingDeviceCoords = createAction(GET_DEVICE_COORDS);
+const settingDeviceCoordsFromPath = createAction(SET_DEVICE_COORDS_FROM_PATH);
 const gettingGeocodeAddress = createAction(GET_GEOCODE_ADDRESS);
 const updatingUserCoords = createAction(UPDATING_DEVICE_COORDS);
 
@@ -28,6 +30,28 @@ const defaultState = {
     }
 };
 
+export function setDeviceCoordsFromPath(coords) {
+
+    return (dispatch) => {
+
+        dispatch(settingDeviceCoordsFromPath())
+
+        var payload = {
+            success: 1,
+            location: {
+                address: '',
+                coords: {
+                    lat: parseFloat(coords.lat).toFixed(7),
+                    lng: parseFloat(coords.lng).toFixed(7)
+                }
+            }
+        };
+
+        dispatch(updatingUserCoords(payload));
+
+    }
+}
+
 export function getDeviceCoords () {
 
     return (dispatch) => {
@@ -43,7 +67,7 @@ export function getDeviceCoords () {
                         address: '',
                         coords: {
                             lat: position.coords.latitude.toFixed(7),
-                            lng: position.coords.longitude.toFixed(7),
+                            lng: position.coords.longitude.toFixed(7)
                         }
                     }
                 };
@@ -71,7 +95,7 @@ export function requestGeocodeAddress(address) {
         dispatch(gettingGeocodeAddress());
 
         fetch(`${Config.Endpoints.GoogleGeocode}?address=${address}&key=${Config.ApiKeys.GoogleGeocode}`)
-        	.then(function(response) {
+        	.then((response) => {
 
                 return response.text();
 

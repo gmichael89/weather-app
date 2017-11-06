@@ -6,7 +6,8 @@ import PropTypes from 'prop-types'
 import log from '../../utilities/log'
 
 import {
-    getLocationData
+    getLocationData,
+    setDeviceCoordsFromPath
 } from '../../reducers/modules/location-search'
 
 import {
@@ -41,8 +42,11 @@ class WeatherResult extends PureComponent {
 
         log(this, 'Render');
 
-        const { coords } = this.props.getLocationData
-        console.log(coords);
+        let { coords } = this.props.getLocationData;
+
+        if (!coords.lat.length && this.props.match.params.lat) {
+            this.updateDeviceCoordsFromPath();
+        }
 
         var hasCoords = coords.lat.length ? true : false;
         if (!hasCoords) {
@@ -68,8 +72,21 @@ class WeatherResult extends PureComponent {
 
     // Can call setState
     componentDidMount() {
+        console.log('componentDidMount')
         const { coords } = this.props.getLocationData;
-        this.props.requestWeatherData(coords);
+
+        console.log(coords)
+        if (coords.lat) {
+            this.props.requestWeatherData(coords);
+        }
+    }
+
+    updateDeviceCoordsFromPath() {
+
+        this.props.setDeviceCoordsFromPath({
+            lat: this.props.match.params.lat,
+            lng: this.props.match.params.lng
+        });
     }
 
     dataTableHTML() {
@@ -95,4 +112,4 @@ const mapStateToProps = (state) => ({
     getWeatherData: getWeatherData(state)
 });
 
-export default connect(mapStateToProps, { requestWeatherData })(WeatherResult)
+export default connect(mapStateToProps, { requestWeatherData, setDeviceCoordsFromPath })(WeatherResult)

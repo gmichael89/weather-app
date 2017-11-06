@@ -40,7 +40,7 @@ class LocationSearch extends PureComponent {
 
         var hasCoords = this.props.getLocationData.coords.lat;
         if (hasCoords) {
-            return <Redirect to="/result" push={true} />
+            return <Redirect to={`/result/${this.props.getLocationData.coords.lat},${this.props.getLocationData.coords.lng}` } push={true} />
         }
 
         return (

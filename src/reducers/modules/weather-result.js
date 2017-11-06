@@ -9,7 +9,7 @@ const gettingWeatherData = createAction(GET_WEATHER_DATA);
 const updatingWeatherData = createAction(UPDATING_WEATHER_DATA);
 
 const Config = require('AppConfig');
-const darkSkyBaseUrl = `${Config.Endpoints.DarkSky}/${Config.ApiKeys.DarkSky}`;
+const getWeatherDataUrl = `${Config.Endpoints.GetWeatherData}`;
 
 // State
 const defaultState = {
@@ -19,18 +19,18 @@ const defaultState = {
 };
 
 export function requestWeatherData(coords) {
-console.log('requestWeatherData');
+    //console.log('requestWeatherData');
     return (dispatch) => {
 
         dispatch(gettingWeatherData());
 
-        fetch(`${darkSkyBaseUrl}/${coords.lat},${coords.lng}`)
-        	.then(function(response) {
+        fetch(`${getWeatherDataUrl}/${coords.lat},${coords.lng}`)
+        	.then((response) => {
 
                 return response.text();
 
             }).then((json) => {
-
+                
                 var data = JSON.parse(json);
 
                 console.log(data);
@@ -55,7 +55,7 @@ console.log('requestWeatherData');
 
                 dispatch(updatingWeatherData());
 
-            }).catch(function(ex) {
+            }).catch((ex) => {
                 console.log('Parsing failed', ex);
                 dispatch(updatingWeatherData());
             });
@@ -84,6 +84,6 @@ export default reducer
 
 // Selectors - Gets called in mapstateprops
 export const getWeatherData = (state) => {
-    console.log('Selector: getWeatherData', state.weatherresult.data);
+    //console.log('Selector: getWeatherData', state.weatherresult.data);
     return state.weatherresult.data
 }
