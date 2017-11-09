@@ -18,12 +18,13 @@ app.all('*', (req, res, next) => {
 });
 
 app.get('/api/getweatherdata/:lat,:lng', (req, res) => {
-
+console.log('getweatherdata');
     //53.4186504,-2.2391706
     fetch(`${darkSkyBaseUrl}/${req.params.lat},${req.params.lng}`)
         .then((response) => {
             return response.json();
         }).then((json) => {
+            console.log(`Succesfully received information at ${new Date()}`)
             return res.json(json);
         }).catch((ex) => {
             res.status(404).send(ex);

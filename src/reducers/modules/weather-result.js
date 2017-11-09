@@ -15,7 +15,8 @@ const getWeatherDataUrl = `${Config.Endpoints.GetWeatherData}`;
 const defaultState = {
     isGettingWeatherData: false,
     success: 0,
-    data: {}
+    hasRequestFailed: 0,
+    data: null
 };
 
 export function requestWeatherData(coords) {
@@ -30,10 +31,8 @@ export function requestWeatherData(coords) {
                 return response.text();
 
             }).then((json) => {
-                
-                var data = JSON.parse(json);
 
-                console.log(data);
+                var data = JSON.parse(json);
 
                 // if (data.results.length) {
                 //     var result = data.results[0];
@@ -53,12 +52,19 @@ export function requestWeatherData(coords) {
                 //     dispatch(updatingUserCoords(payload));
                 // }
 
-                dispatch(updatingWeatherData());
+                dispatch(updatingWeatherData({
+                    success: 1,
+                    data
+                }));
 
             }).catch((ex) => {
-                console.log('Parsing failed', ex);
-                dispatch(updatingWeatherData());
-            });
+                console.log(ex);
+                dispatch(updatingWeatherData({
+                    success: 0,
+                    hasRequestFailed: 1,
+                    data: null
+                }))
+            })
     }
 }
 
@@ -86,4 +92,16 @@ export default reducer
 export const getWeatherData = (state) => {
     //console.log('Selector: getWeatherData', state.weatherresult.data);
     return state.weatherresult.data
+}
+
+export const isGettingWeatherData = (state) => {
+    return state.weatherresult.isGettingWeatherData
+}
+
+export const hasRequestFailed = (state) => {
+    return state.weatherresult.hasRequestFailed
+}
+
+export const isRequestSuccessful = (state) => {
+    return state.weatherresult.success
 }

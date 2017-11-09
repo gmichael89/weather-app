@@ -158,7 +158,7 @@ export default reducer
 
 // Selectors - Gets called in mapstateprops
 export const getLocationData = (state) => {
-    //console.log('Selector: getCoordData', state.locationsearch.location);
+    //console.log('Selector: getLocationData', state.locationsearch.location);
     return state.locationsearch.location
 }
 
