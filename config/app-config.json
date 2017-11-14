@@ -1,0 +1,7 @@
+{
+    "Endpoints": {
+        "GetWeatherData": "http://localhost:3000/api/getweatherdata",
+        "GoogleGeocode": "https://maps.googleapis.com/maps/api/geocode/json",
+        "DarkSky": "https://api.darksky.net/forecast"
+    }
+}

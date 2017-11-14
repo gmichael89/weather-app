@@ -3,10 +3,14 @@ import React, {PureComponent, Component} from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
+
+// Utilities
 import log from '../../utilities/log'
 
 // Components
-import CurrentWeather from '../../components/WeatherResult/CurrentWeather'
+import { CoordinateDataTable } from '../../components/Common/CoordinateDataTable'
+import CurrentWeather from '../../components/WeatherResult/CurrentWeather/CurrentWeather'
+import DailyWeather from '../../components/WeatherResult/DailyWeather/DailyWeather'
 
 import {
     getLocationData,
@@ -29,40 +33,38 @@ class WeatherResult extends PureComponent {
 
     render() {
 
+        const { coords }  = this.props.getLocationData
+
         log(this, 'Render');
 
         if ( ! this.hasCoords()) {
             return <Redirect to="/" push={false} />
         }
 
-        console.log(this.props.getWeatherData)
-
         return (
-            <div className="weather-result">
+            <section className="weather-result">
                 <h1>Result</h1>
-                <section>
-                { this.dataTableHTML() }
                 {
-                    // !this.props.hasRequestFailed
-                    // ?
-                    (this.props.isGettingWeatherData) &&
-
-                         this.renderLoading()
-
-
-                    // :
-                    //
+                    (this.hasCoords()) ?
+                        CoordinateDataTable(coords) : ''
                 }
                 {
-                    (this.props.isRequestSuccessful) &&
-
+                    (this.props.isGettingWeatherData) ?
+                         this.renderLoading() : ''
+                }
+                {
+                    (this.props.hasRequestFailed) ?
+                        <p>There was a problem requesting the data.</p> : ''
+                }
+                {
+                    (this.props.isRequestSuccessful && !this.props.hasRequestFailed) ?
+                        <div>
                             <CurrentWeather data={this.props.getWeatherData.currently} />
-
-                    // :
-                    //     <p>There was a problem requesting the data.</p>
+                            <DailyWeather data={this.props.getWeatherData.daily} />
+                        </div>
+                    : ''
                  }
-                 </section>
-            </div>
+            </section>
         )
     }
 
@@ -79,7 +81,7 @@ class WeatherResult extends PureComponent {
         };
 
         // If a user has landed on the link.
-        if (!this.props.getLocationData.lat) {
+        if (!this.props.getLocationData.coords.lat.length) {
             this.props.setDeviceCoordsFromPath({
                 lat: this.props.match.params.lat,
                 lng: this.props.match.params.lng
@@ -91,27 +93,7 @@ class WeatherResult extends PureComponent {
     }
 
     hasCoords() {
-        return this.props.lat || this.props.match.params.lat
-    }
-
-    dataTableHTML() {
-        return (
-            <section>
-                <h2>Your current position</h2>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Latitude:</td>
-                            <td>{this.props.getLocationData.coords.lat}</td>
-                        </tr>
-                        <tr>
-                            <td>Longitude:</td>
-                            <td>{this.props.getLocationData.coords.lng}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        );
+        return (this.props.getLocationData && this.props.getLocationData.coords) || this.props.match.params.lat.length > -1
     }
 }
 
@@ -123,4 +105,7 @@ const mapStateToProps = (state) => ({
     isRequestSuccessful: isRequestSuccessful(state)
 });
 
-export default connect(mapStateToProps, { requestWeatherData, setDeviceCoordsFromPath })(WeatherResult)
+export default connect(mapStateToProps, {
+    requestWeatherData,
+    setDeviceCoordsFromPath
+})(WeatherResult)

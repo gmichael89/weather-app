@@ -9,11 +9,21 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 module.exports = {
     entry: `${__dirname}/src/index.js`,
     module: {
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        }]
+        loaders: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                  { loader: 'style-loader' },
+                  { loader: 'css-loader' },
+                  { loader: 'sass-loader' }
+                ]
+            }
+        ]
     },
     output: {
         filename: 'bundle.js',
@@ -21,6 +31,6 @@ module.exports = {
     },
     plugins: [HtmlWebpackPluginConfig],
     externals: {
-        'AppConfig': JSON.stringify(require('./app-config.json'))
+        'AppConfig': JSON.stringify(require('./config/app-config.js'))
     }
 };

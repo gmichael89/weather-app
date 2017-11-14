@@ -11,20 +11,24 @@ import {Provider} from 'react-redux'
 import store from './reducers/store'
 
 // Components
+import MainLayout from './containers/MainLayout'
 import Dashboard from './containers/Dashboard'
 import WeatherResult from './containers/WeatherResult/WeatherResult'
 
+//<Route exact path='/' component={Dashboard} />
+
 render(
     <Provider store={store}>
-        <Router>
-            <div>
+        <MainLayout>
+            <Router>
                 <Switch>
-                    <Route exact path='/' component={Dashboard} />
-                    <Route exact path='/result/:lat,:lng' component={WeatherResult} />
-                    <Redirect to='/' component={Dashboard} />
+                        <Route exact path='/' component={Dashboard} />
+                        <Route exact path='/result/:lat,:lng' component={WeatherResult} />
+                        <Redirect to='/' component={Dashboard} />
                 </Switch>
-            </div>
-        </Router>
+            </Router>
+
+        </MainLayout>
     </Provider>,
     document.getElementById('app')
 )

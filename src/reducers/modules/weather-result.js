@@ -32,33 +32,20 @@ export function requestWeatherData(coords) {
 
             }).then((json) => {
 
-                var data = JSON.parse(json);
+                var response = JSON.parse(json);
 
-                // if (data.results.length) {
-                //     var result = data.results[0];
-                //
-                //     var payload = {
-                //         success: 1,
-                //         location: {
-                //             address: '',
-                //             coords: {
-                //                 lat: result.geometry.location.lat,
-                //                 lng: result.geometry.location.lng
-                //             }
-                //         }
-                //     };
-                    //console.log('Success geocoding position.', payload);
-
-                //     dispatch(updatingUserCoords(payload));
-                // }
-
+                if (response.status != 200) {
+                    throw new Error(response.data.message)
+                }
+console.log(response);
                 dispatch(updatingWeatherData({
                     success: 1,
-                    data
+                    data: response.data
                 }));
 
             }).catch((ex) => {
-                console.log(ex);
+                //console.log('FAILED', ex);
+
                 dispatch(updatingWeatherData({
                     success: 0,
                     hasRequestFailed: 1,
