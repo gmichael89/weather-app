@@ -1,4 +1,6 @@
-# weather-app
+!In Development!
+
+# Weather Checker App
 React/redux app that hooks into Dark Sky API for weather information.
 
 ## Installation
