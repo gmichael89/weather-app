@@ -16,22 +16,13 @@ import {
 class LocationSearch extends PureComponent {
 
     static propTypes = {
-        onReceivedLocation: PropTypes.func.isRequired
+        //onReceivedLocation: PropTypes.func.isRequired
     }
 
     state = {
         location: {
             address: ''
         }
-    }
-
-    constructor() {
-        super();
-
-        this.geocodeAddress = this.geocodeAddress.bind(this);
-        this.getDeviceLocation = this.getDeviceLocation.bind(this);
-        this.inputOnBlur = this.inputOnBlur.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
     }
 
     render() {
@@ -95,7 +86,7 @@ class LocationSearch extends PureComponent {
         );
     }
 
-    geocodeAddress(event) {
+    geocodeAddress = event => {
 
         event.preventDefault();
 
@@ -106,23 +97,11 @@ class LocationSearch extends PureComponent {
         }
     }
 
-    getDeviceLocation(event) {
+    getDeviceLocation = event => {
 
         event.preventDefault();
 
         this.props.getDeviceCoords();
-
-    }
-
-    onSubmit(event) {
-
-        event.preventDefault();
-
-        // var hasCoords = this.props.getLocationData.coords.lat;
-        // if (hasCoords) {
-        //     this.props.history.push('/result');
-        //     //this.props.onReceivedLocation(this.props.getLocationData.coords);
-        // }
 
     }
 

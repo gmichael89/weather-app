@@ -37,7 +37,9 @@ export function requestWeatherData(coords) {
                 if (response.status != 200) {
                     throw new Error(response.data.message)
                 }
-console.log(response);
+
+                console.log(response);
+
                 dispatch(updatingWeatherData({
                     success: 1,
                     data: response.data

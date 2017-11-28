@@ -23,14 +23,14 @@ class Dashboard extends PureComponent {
     constructor() {
         super();
 
-        this.receivedLocation = this.receivedLocation.bind(this);
+        //this.receivedLocation = this.receivedLocation.bind(this);
     }
 
     render() {
 
         log(this, 'Render');
         const { coords } = this.state;
-        
+
         var hasCoords = coords.lat ? true : false;
 
         return (
@@ -45,13 +45,13 @@ class Dashboard extends PureComponent {
             </div>
         )
     }
-
-    receivedLocation(coords) {
-
-        this.setState({
-            coords
-        });
-    }
+// 
+//     receivedLocation(coords) {
+// console.log('receivedLocation');
+//         this.setState({
+//             coords
+//         });
+//     }
 }
 
 export default connect()(Dashboard)

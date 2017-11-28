@@ -8,9 +8,16 @@ import PropTypes from 'prop-types'
 import log from '../../utilities/log'
 
 // Components
-import { CoordinateDataTable } from '../../components/Common/CoordinateDataTable'
+import CoordinateDataTable from '../../components/Common/CoordinateDataTable'
+
+// Containers
+import TabView from '../TabView/TabView'
+
+// Components
 import CurrentWeather from '../../components/WeatherResult/CurrentWeather/CurrentWeather'
 import DailyWeather from '../../components/WeatherResult/DailyWeather/DailyWeather'
+import HourlyWeather from '../../components/WeatherResult/HourlyWeather/HourlyWeather'
+import MinutelyWeather from '../../components/WeatherResult/MinutelyWeather/MinutelyWeather'
 
 import {
     getLocationData,
@@ -29,6 +36,27 @@ class WeatherResult extends PureComponent {
 
     static propTypes = {
         coords: PropTypes.object
+    }
+
+    getTabMappings() {
+
+        return [{
+            title: 'Currently',
+            component: CurrentWeather,
+            apiDataAccessor: 'currently'
+        },{
+            title: 'Hourly',
+            component: HourlyWeather,
+            apiDataAccessor: 'hourly'
+        },{
+            title: 'Daily',
+            component: DailyWeather,
+            apiDataAccessor: 'daily'
+        },{
+            title: 'Minutely',
+            component: MinutelyWeather,
+            apiDataAccessor: 'minutely'
+        }]
     }
 
     render() {
@@ -58,14 +86,24 @@ class WeatherResult extends PureComponent {
                 }
                 {
                     (this.props.isRequestSuccessful && !this.props.hasRequestFailed) ?
-                        <div>
-                            <CurrentWeather data={this.props.getWeatherData.currently} />
-                            <DailyWeather data={this.props.getWeatherData.daily} />
-                        </div>
+                    <div>
+                        {
+                            <TabView data={this.buildTabData()} />
+                        }
+                    </div>
                     : ''
                  }
             </section>
         )
+    }
+
+    buildTabData = () => {
+        return this.getTabMappings().map((item) => {
+            return {
+                ...item,
+                data: this.props.getWeatherData[item.apiDataAccessor]
+            }
+        })
     }
 
     renderLoading() {

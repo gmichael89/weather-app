@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import ResultComponent from '../ResultComponent'
+import ResultComponentBase from '../ResultComponentBase'
 
 import PropTypes from 'prop-types'
 
@@ -7,7 +7,7 @@ import log from '../../../utilities/log'
 
 import './DailyWeather.scss'
 
-class DailyWeather extends ResultComponent {
+class DailyWeather extends ResultComponentBase {
 
     static propTypes = {
         data: PropTypes.object
@@ -34,6 +34,8 @@ class DailyWeather extends ResultComponent {
             </section>
         )
     }
+
+
 }
 
 export default DailyWeather

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function CoordinateDataTable(coords) {
+export default function CoordinateDataTable(coords) {
     //console.log('dataTableHTML');
 
     if (!coords) {

@@ -1,13 +1,14 @@
 import React, {PureComponent} from 'react'
-import ResultComponent from '../ResultComponent'
+import ResultComponentBase from '../ResultComponentBase'
 
 import PropTypes from 'prop-types'
+import deepMerge from 'deepmerge'
 
 import log from '../../../utilities/log'
 
 import './CurrentWeather.scss'
 
-class CurrentWeather extends ResultComponent {
+class CurrentWeather extends ResultComponentBase {
 
     static propTypes = {
         data: PropTypes.object
@@ -23,16 +24,49 @@ class CurrentWeather extends ResultComponent {
 
         const { data } = this.props
 
-        console.log(data, this.state.componentName)
+        console.log(data)
 
         return (
-            <section className={`${this.state.componentName} result-component`}>
+            <section className={`${data.componentName} result-component`}>
                 <h2>Current Weather</h2>
                 {
-                    this.summary(this.state.componentName)
+                    this.summary(data.componentName)
                 }
+                <div>
+                    <canvas id="CloudCover" />
+                </div>
             </section>
         )
+    }
+
+    componentDidMount() {
+
+        var ctx = document.getElementById('CloudCover').getContext("2d")
+        const { data } = this.props
+
+        this.doughnutData = {
+            datasets: [
+                {
+                    label: 'Cloud Cover',
+                    data: [data.cloudCover, parseFloat((1 - data.cloudCover))],
+                    backgroundColor: ['rgb(255, 99, 132)', '#EEE'],
+                    label: ['Cloud Cover']
+                }
+            ]
+        };
+
+        ctx.canvas.height = 200;
+
+        var mergedConfig = deepMerge(this.chartjsDoughnutDefaults, {
+            data: this.doughnutData,
+            options: {
+                title: {
+                    text: `${this.convertToPercentage(this.props.data.cloudCover)}`
+                }
+            }
+        })
+
+        this.doughnutChart = new Chart(ctx, mergedConfig);
     }
 }
 
