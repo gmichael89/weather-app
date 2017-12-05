@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table doesn't render when no input is provided. 1`] = `""`;
+
+exports[`Table renders with provided latitude and longitude. 1`] = `
+<section>
+  <h2>
+    Your current position
+  </h2>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          Latitude:
+        </td>
+        <td>
+          53.4186504
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Longitude:
+        </td>
+        <td>
+          -2.2391706
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+`;

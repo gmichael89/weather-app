@@ -1,9 +1,10 @@
 import React from 'react'
 
 export default function CoordinateDataTable(coords) {
-    //console.log('dataTableHTML');
 
-    if (!coords) {
+    const { lat, lng } = coords;
+
+    if (!lat) {
         return ''
     }
 
@@ -14,11 +15,11 @@ export default function CoordinateDataTable(coords) {
                 <tbody>
                     <tr>
                         <td>Latitude:</td>
-                        <td>{coords.lat}</td>
+                        <td>{lat}</td>
                     </tr>
                     <tr>
                         <td>Longitude:</td>
-                        <td>{coords.lng}</td>
+                        <td>{lng}</td>
                     </tr>
                 </tbody>
             </table>
